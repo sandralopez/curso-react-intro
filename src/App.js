@@ -5,17 +5,47 @@ import { TodoList } from './TodoList';
 import { TodoItem } from './TodoItem';
 import { CreateTodoButton } from './CreateTodoButton';
 
-const defaultTodos = [ 
+/* const defaultTodos = [ 
   { text: 'Cortar la cebolla', completed : true},
   { text: 'Cortar el pimiento', completed : false},
   { text: 'Hacer la tortilla', completed : false},
   { text: 'Echar el aceite', completed : false},
   { text: 'Poner especias', completed : false},
-];
+]; 
+
+localStorage.setItem('TODOS_V1', JSON.stringify(defaultTodos));
+localStorage.removeItem('TODOS_V1');
+*/
+
+// Custom Hook
+function useLocalStorage (itemName, initialValue) {
+  const localStorageItem = localStorage.getItem(itemName);
+
+  let parsedItem;
+
+  if (!localStorageItem) {
+    parsedItem = initialValue;
+    localStorage.setItem(itemName, JSON.stringify(parsedItem));
+  }
+  else {
+    parsedItem = JSON.parse(localStorageItem);
+  }
+
+  // Crear un estado interno del custom hook
+  const [item, setItem] = React.useState(parsedItem);
+
+  const saveItem = (newItem) => {
+    localStorage.setItem(itemName, JSON.stringify(newItem));
+    
+    setItem(newItem);
+  }
+
+  return [item, saveItem];
+}
 
 function App() {
   // Estados
-  const [todos, setTodos] = React.useState(defaultTodos);
+  const [todos, saveTodos] = useLocalStorage('TODOS_V1', []);
   const [searchValue, setSearchValue] = React.useState('');
 
   // Estados derivados (derivados de los estados)
@@ -37,7 +67,7 @@ function App() {
     );
 
     newTodos[todoIndex].completed = true;
-    setTodos(newTodos);
+    saveTodos(newTodos);
   };
 
   const deleteTodo = (text) => {
@@ -48,7 +78,7 @@ function App() {
     );
 
     newTodos.splice(todoIndex, 1);
-    setTodos(newTodos);
+    saveTodos(newTodos);
   };
 
   return (
