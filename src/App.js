@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './platzi.webp';
 import { TodoCounter } from './TodoCounter';
 import { TodoSearch } from './TodoSearch';
 import { TodoList } from './TodoList';
@@ -26,7 +25,7 @@ function App() {
     (todo) => {
       const todoText = todo.text.toLowerCase();
       const searchText = searchValue.toLowerCase();
-      return todo.text.includes(searchText);
+      return todoText.includes(searchText);
     }
   );
 
@@ -34,8 +33,9 @@ function App() {
     // Crear copia del array de todos
     const newTodos = [...todos];
     const todoIndex = newTodos.findIndex(
-      (todo) => todo.text == text
+      (todo) => todo.text === text
     );
+
     newTodos[todoIndex].completed = true;
     setTodos(newTodos);
   };
@@ -44,8 +44,9 @@ function App() {
     // Crear copia del array de todos
     const newTodos = [...todos];
     const todoIndex = newTodos.findIndex(
-      (todo) => todo.text == text
+      (todo) => todo.text === text
     );
+
     newTodos.splice(todoIndex, 1);
     setTodos(newTodos);
   };
