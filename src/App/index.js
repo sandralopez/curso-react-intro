@@ -2,7 +2,10 @@ import React from 'react';
 import { AppUI } from './AppUI';
 import { useLocalStorage } from './useLocalStorage';
 
-/* const defaultTodos = [ 
+/* 
+localStorage.removeItem('TODOS_V1');
+
+const defaultTodos = [ 
   { text: 'Cortar la cebolla', completed : true},
   { text: 'Cortar el pimiento', completed : false},
   { text: 'Hacer la tortilla', completed : false},
@@ -11,12 +14,16 @@ import { useLocalStorage } from './useLocalStorage';
 ]; 
 
 localStorage.setItem('TODOS_V1', JSON.stringify(defaultTodos));
-localStorage.removeItem('TODOS_V1');
 */
 
 function App() {
   // Estados
-  const [todos, saveTodos] = useLocalStorage('TODOS_V1', []);
+  const {
+    item: todos,          // Nombres que devuelve el custom hook
+    saveItem: saveTodos,  // Con : renombramos las propiedades
+    loading,
+    error,
+  } = useLocalStorage('TODOS_V1', []);
   const [searchValue, setSearchValue] = React.useState('');
 
   // Estados derivados (derivados de los estados)
@@ -54,6 +61,8 @@ function App() {
 
   return (
     <AppUI 
+      loading={loading}
+      error={error}
       completedTodos={completedTodos}
       totalTodos={totalTodos}
       searchValue={searchValue}
