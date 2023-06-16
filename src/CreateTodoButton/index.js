@@ -1,15 +1,13 @@
 import './CreateTodoButton.css';
 
-function CreateTodoButton() {
+function CreateTodoButton({ setOpenModal }) {
   return (
     <button 
        className="CreateTodoButton"
         onClick={
-          (event) => {
-            console.log('le has dado al botón');
-            console.log(event);
-            console.log(event.target);
-        }
+          () => {
+            setOpenModal(state => !state); // Arrow function que recibe el estado y devuelve su negación
+          }
       }>+</button>
   );
 }
